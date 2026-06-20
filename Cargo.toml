@@ -2,10 +2,13 @@
 name = "protocols"
 version = "0.1.0"
 edition = "2024"
+default-run = "protocols"
 
 [dependencies]
 axum = { version = "0.8.9", features = ["ws"] }
 futures-util = "0.3.32"
+jsonrpsee = { version = "0.26.0", features = ["server"] }
 serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
 tokio = { version = "1.52.3", features = ["full"] }
 tokio-stream = { version = "0.1.18", features = ["sync"] }
