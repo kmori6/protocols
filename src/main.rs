@@ -2,7 +2,10 @@ mod rest;
 mod sse;
 mod ws;
 
-use std::{collections::HashMap, sync::{Arc, Mutex}};
+use std::{
+    collections::HashMap,
+    sync::{Arc, Mutex},
+};
 
 #[tokio::main]
 async fn main() {

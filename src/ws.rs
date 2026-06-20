@@ -1,28 +1,28 @@
 use axum::{
+    Router,
     extract::{
-        ws::{Message, WebSocket, WebSocketUpgrade},
         State,
+        ws::{Message, WebSocket, WebSocketUpgrade},
     },
     response::Response,
     routing::any,
-    Router,
 };
 use futures_util::{SinkExt, StreamExt};
-use std::sync::Arc;
 use tokio::sync::broadcast;
 
+#[derive(Clone)]
 pub struct WsState {
-    pub tx: broadcast::Sender<String>,
+    tx: broadcast::Sender<String>,
 }
 
 impl WsState {
-    pub fn new() -> Arc<Self> {
+    pub fn new() -> Self {
         let (tx, _) = broadcast::channel(64);
-        Arc::new(Self { tx })
+        Self { tx }
     }
 }
 
-pub fn router() -> Router<Arc<WsState>> {
+pub fn router() -> Router<WsState> {
     Router::new()
         .route("/echo", any(echo_handler))
         .route("/chat", any(chat_handler))
@@ -35,34 +35,20 @@ async fn echo_handler(ws: WebSocketUpgrade) -> Response {
 }
 
 async fn handle_echo(mut socket: WebSocket) {
-    while let Some(Ok(msg)) = socket.recv().await {
-        match msg {
-            Message::Text(text) => {
-                if socket.send(Message::Text(text)).await.is_err() {
-                    return;
-                }
-            }
-            Message::Binary(bytes) => {
-                if socket.send(Message::Binary(bytes)).await.is_err() {
-                    return;
-                }
-            }
-            Message::Close(_) => return,
-            _ => {}
+    while let Some(Ok(message)) = socket.recv().await {
+        if socket.send(message).await.is_err() {
+            return;
         }
     }
 }
 
 // ── chat (broadcast) ──────────────────────────────────────────────────────────
 
-async fn chat_handler(
-    ws: WebSocketUpgrade,
-    State(state): State<Arc<WsState>>,
-) -> Response {
+async fn chat_handler(ws: WebSocketUpgrade, State(state): State<WsState>) -> Response {
     ws.on_upgrade(|socket| handle_chat(socket, state))
 }
 
-async fn handle_chat(socket: WebSocket, state: Arc<WsState>) {
+async fn handle_chat(socket: WebSocket, state: WsState) {
     let (mut sender, mut receiver) = socket.split();
     let mut rx = state.tx.subscribe();
 

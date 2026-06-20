@@ -426,7 +426,6 @@ dependencies = [
  "axum",
  "futures-util",
  "serde",
- "serde_json",
  "tokio",
  "tokio-stream",
 ]
