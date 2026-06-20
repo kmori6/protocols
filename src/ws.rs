@@ -24,8 +24,8 @@ impl WsState {
 
 pub fn router() -> Router<Arc<WsState>> {
     Router::new()
-        .route("/ws/echo", any(echo_handler))
-        .route("/ws/chat", any(chat_handler))
+        .route("/echo", any(echo_handler))
+        .route("/chat", any(chat_handler))
 }
 
 // ── echo ──────────────────────────────────────────────────────────────────────
