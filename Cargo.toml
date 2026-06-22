@@ -5,6 +5,9 @@ edition = "2024"
 default-run = "protocols"
 
 [dependencies]
+a2a = { package = "a2a-lf", version = "0.3.0" }
+a2a-client = { package = "a2a-client-lf", version = "0.2.0", default-features = false }
+a2a-server = { package = "a2a-server-lf", version = "0.4.0", default-features = false }
 axum = { version = "0.8.9", features = ["ws"] }
 futures-util = "0.3.32"
 jsonrpsee = { version = "0.26.0", features = ["server"] }
@@ -29,3 +32,11 @@ path = "src/bin/mcp/http_server.rs"
 [[bin]]
 name = "mcp_http_client"
 path = "src/bin/mcp/http_client.rs"
+
+[[bin]]
+name = "a2a_server"
+path = "src/bin/a2a/server.rs"
+
+[[bin]]
+name = "a2a_client"
+path = "src/bin/a2a/client.rs"

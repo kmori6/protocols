@@ -1,6 +1,6 @@
 # Protocols
 
-Small Rust examples for REST, Server-Sent Events, WebSocket, JSON-RPC 2.0, and MCP.
+Small Rust examples for REST, Server-Sent Events, WebSocket, JSON-RPC 2.0, MCP, and A2A.
 
 ## REST, SSE, and WebSocket server
 
@@ -153,4 +153,24 @@ Run the HTTP client in another terminal. It lists the tools and calls `add`:
 
 ```sh
 cargo run --bin mcp_http_client
+```
+
+## A2A
+
+Start the JSON-RPC A2A server on port `3003`:
+
+```sh
+cargo run --bin a2a_server
+```
+
+Read its Agent Card:
+
+```sh
+curl http://127.0.0.1:3003/.well-known/agent-card.json | jq
+```
+
+Run the A2A client in another terminal. It sends a message, reads the stored task, and receives streaming task updates:
+
+```sh
+cargo run --bin a2a_client
 ```
