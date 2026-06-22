@@ -1,6 +1,6 @@
 # Protocols
 
-Small Rust examples for REST, Server-Sent Events, WebSocket, and JSON-RPC 2.0.
+Small Rust examples for REST, Server-Sent Events, WebSocket, JSON-RPC 2.0, and MCP.
 
 ## REST, SSE, and WebSocket server
 
@@ -91,4 +91,50 @@ Test `add`:
 curl -X POST http://localhost:3001 \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"add","params":{"a":2,"b":3},"id":2}'
+```
+
+## MCP
+
+Build the stdio MCP server and Rust client:
+
+```sh
+cargo build --bin mcp --bin mcp_client
+```
+
+Run the Rust client. It starts the server, lists its tools, and calls `add`:
+
+```sh
+cargo run --bin mcp_client
+```
+
+Open the server with [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector):
+
+```sh
+npx @modelcontextprotocol/inspector ./target/debug/mcp
+```
+
+List the available tools from the command line:
+
+```sh
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+  --method tools/list
+```
+
+Call `echo`:
+
+```sh
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+  --method tools/call \
+  --tool-name echo \
+  --tool-arg message=hello
+```
+
+Call `add`:
+
+```sh
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+  --method tools/call \
+  --tool-name add \
+  --tool-arg a=2 \
+  --tool-arg b=3
 ```
