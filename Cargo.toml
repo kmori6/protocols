@@ -8,16 +8,24 @@ default-run = "protocols"
 axum = { version = "0.8.9", features = ["ws"] }
 futures-util = "0.3.32"
 jsonrpsee = { version = "0.26.0", features = ["server"] }
-rmcp = { version = "1.7.0", default-features = false, features = ["server", "client", "macros", "schemars", "transport-io", "transport-child-process"] }
+rmcp = { version = "1.7.0", default-features = false, features = ["server", "client", "macros", "schemars", "transport-io", "transport-child-process", "transport-streamable-http-server", "transport-streamable-http-client-reqwest"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
 tokio = { version = "1.52.3", features = ["full"] }
 tokio-stream = { version = "0.1.18", features = ["sync"] }
 
 [[bin]]
-name = "mcp"
-path = "src/bin/mcp/server.rs"
+name = "mcp_stdio_server"
+path = "src/bin/mcp/stdio_server.rs"
 
 [[bin]]
-name = "mcp_client"
-path = "src/bin/mcp/client.rs"
+name = "mcp_stdio_client"
+path = "src/bin/mcp/stdio_client.rs"
+
+[[bin]]
+name = "mcp_http_server"
+path = "src/bin/mcp/http_server.rs"
+
+[[bin]]
+name = "mcp_http_client"
+path = "src/bin/mcp/http_client.rs"

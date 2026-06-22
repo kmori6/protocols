@@ -95,35 +95,37 @@ curl -X POST http://localhost:3001 \
 
 ## MCP
 
-Build the stdio MCP server and Rust client:
+### stdio
+
+Build the stdio MCP server and client:
 
 ```sh
-cargo build --bin mcp --bin mcp_client
+cargo build --bin mcp_stdio_server --bin mcp_stdio_client
 ```
 
 Run the Rust client. It starts the server, lists its tools, and calls `add`:
 
 ```sh
-cargo run --bin mcp_client
+cargo run --bin mcp_stdio_client
 ```
 
 Open the server with [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector):
 
 ```sh
-npx @modelcontextprotocol/inspector ./target/debug/mcp
+npx @modelcontextprotocol/inspector ./target/debug/mcp_stdio_server
 ```
 
 List the available tools from the command line:
 
 ```sh
-npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp_stdio_server \
   --method tools/list
 ```
 
 Call `echo`:
 
 ```sh
-npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp_stdio_server \
   --method tools/call \
   --tool-name echo \
   --tool-arg message=hello
@@ -132,9 +134,23 @@ npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
 Call `add`:
 
 ```sh
-npx @modelcontextprotocol/inspector --cli ./target/debug/mcp \
+npx @modelcontextprotocol/inspector --cli ./target/debug/mcp_stdio_server \
   --method tools/call \
   --tool-name add \
   --tool-arg a=2 \
   --tool-arg b=3
+```
+
+### Streamable HTTP
+
+Start the MCP server on `http://127.0.0.1:3002/mcp`:
+
+```sh
+cargo run --bin mcp_http_server
+```
+
+Run the HTTP client in another terminal. It lists the tools and calls `add`:
+
+```sh
+cargo run --bin mcp_http_client
 ```

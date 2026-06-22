@@ -5,7 +5,7 @@ use tokio::process::Command;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let server_path = env::current_exe()?.with_file_name("mcp");
+    let server_path = env::current_exe()?.with_file_name("mcp_stdio_server");
     let transport = TokioChildProcess::new(Command::new(server_path))?;
     let client = ().serve(transport).await?;
 

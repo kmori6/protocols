@@ -1,8 +1,5 @@
-use rmcp::{
-    ServiceExt, handler::server::wrapper::Parameters, schemars, tool, tool_router, transport::stdio,
-};
+use rmcp::{handler::server::wrapper::Parameters, schemars, tool, tool_router};
 use serde::Deserialize;
-use std::error::Error;
 
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
 struct EchoParams {
@@ -24,7 +21,7 @@ fn add(a: i64, b: i64) -> i64 {
 }
 
 #[derive(Clone)]
-struct Tools;
+pub struct Tools;
 
 #[tool_router(server_handler)]
 impl Tools {
@@ -37,12 +34,4 @@ impl Tools {
     fn add(&self, Parameters(params): Parameters<AddParams>) -> String {
         add(params.a, params.b).to_string()
     }
-}
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let service = Tools.serve(stdio()).await?;
-    service.waiting().await?;
-
-    Ok(())
 }
