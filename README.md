@@ -1,6 +1,6 @@
 # Protocols
 
-Small Rust examples for REST, Server-Sent Events, WebSocket, JSON-RPC 2.0, MCP, and A2A.
+Small Rust examples for REST, Server-Sent Events, WebSocket, JSON-RPC 2.0, MCP, A2A, and gRPC.
 
 ## REST, SSE, and WebSocket server
 
@@ -173,4 +173,20 @@ Run the A2A client in another terminal. It sends a message, reads the stored tas
 
 ```sh
 cargo run --bin a2a_client
+```
+
+## gRPC
+
+Cargo runs `build.rs` automatically during the build. It compiles `proto/protocols.proto` into Rust code in Cargo's `OUT_DIR`, so no separate code-generation command is needed.
+
+Start the gRPC server on port `50051`:
+
+```sh
+cargo run --bin grpc_server
+```
+
+Run the client in another terminal. It exercises unary, server-streaming, client-streaming, and bidirectional-streaming RPCs:
+
+```sh
+cargo run --bin grpc_client
 ```
